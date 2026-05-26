@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/TI/Documents/genie-lamp/index.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genie of the Lamp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./Genie of the Lamp_files/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./Genie of the Lamp_files/styles.css">
+</head>
+<body>
+  <div class="cosmos" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="aurora"></div>
+    <div class="sand-particles"></div>
+    <div class="cursor-sparkles" id="cursorSparkles" aria-hidden="true"></div>
+  </div>
+
+  <div class="top-bar">
+    <button type="button" class="btn-icon" id="settingsBtn" title="AI Settings">
+      <span data-i18n="settingsBtn">IA</span>
+      <span class="ai-dot" id="aiDot"></span>
+    </button>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang="en" id="langEn">EN</button>
+      <button type="button" class="lang-btn active" data-lang="es" id="langEs">ES</button>
+    </div>
+  </div>
+
+  <main class="app">
+    <header class="hero">
+      <p class="tagline" data-i18n="tagline">Tres deseos gratis. Después, la lámpara pide tributo.</p>
+      <h1 class="title">
+        <span class="title-glow" data-i18n="titleGenie">Genio</span>
+        <span class="title-of" data-i18n="titleOf">de la</span>
+        <span class="title-lamp" data-i18n="titleLamp">Lámpara</span>
+      </h1>
+      <p class="ai-status" id="aiStatus">Modo inteligente (añade API key para IA)</p>
+    </header>
+
+    <div class="wishes-meter" id="wishesMeter" aria-live="polite">
+      <div class="wishes-orbs">
+        <span class="wish-orb spent" data-orb="1"></span>
+        <span class="wish-orb spent" data-orb="2"></span>
+        <span class="wish-orb spent" data-orb="3"></span>
+      </div>
+      <p class="wishes-text" id="wishesText">5 deseo(s) pagado(s) restante(s)</p>
+    </div>
+
+    <section class="memory-panel" id="memoryPanel">
+      <button type="button" class="memory-toggle open" id="memoryToggle" aria-expanded="true">
+        <span class="memory-icon">✨</span>
+        <span data-i18n="memoryTitle">El genio te recuerda</span>
+        <span class="memory-chevron">▼</span>
+      </button>
+      <div class="memory-body" id="memoryBody">
+        <p class="memory-stats" id="memoryStats">Visitas: 0 · Preguntas: 0</p>
+        <ul class="memory-list" id="memoryList"></ul>
+        <p class="memory-empty" id="memoryEmpty" data-i18n="memoryEmpty">Sin recuerdos aún — ¡pide tu primer deseo!</p>
+        <button type="button" class="btn-memory-clear" id="clearMemory" data-i18n="memoryClear">Borrar memoria</button>
+      </div>
+    </section>
+
+    <section class="lamp-stage" aria-label="Magic lamp">
+      <p class="rub-hint" id="rubHint" data-i18n="rubHint">¡Haz clic o arrastra la lámpara!</p>
+      <div class="rub-bar" id="rubBar" hidden="">
+        <div class="rub-fill" id="rubFill"></div>
+      </div>
+
+      <div class="shockwave" id="shockwave" aria-hidden="true"></div>
+      <div class="shockwave shockwave-2" id="shockwave2" aria-hidden="true"></div>
+      <div class="magic-ring ring-1"></div>
+      <div class="magic-ring ring-2"></div>
+
+      <div class="smoke smoke-1"></div>
+      <div class="smoke smoke-2"></div>
+      <div class="smoke smoke-3"></div>
+      <div class="smoke smoke-4"></div>
+
+      <div class="spark-burst" id="sparkBurst" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="genie-aura" id="genieAura"></div>
+      <div class="genie-aura genie-aura-2" id="genieAura2"></div>
+
+      <div class="lamp-wrap" id="lampWrap">
+        <svg class="lamp" id="lampSvg" viewBox="0 0 200 280" role="img" aria-label="Golden lamp">
+          <defs>
+            <lineargradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff4c4"></stop>
+              <stop offset="35%" stop-color="#e8b84a"></stop>
+              <stop offset="70%" stop-color="#b8860b"></stop>
+              <stop offset="100%" stop-color="#6b4a0a"></stop>
+            </lineargradient>
+            <lineargradient id="goldShine" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fff9e6" stop-opacity="0.9"></stop>
+              <stop offset="100%" stop-color="#e8b84a" stop-opacity="0"></stop>
+            </lineargradient>
+            <filter id="glow">
+              <fegaussianblur stdDeviation="4" result="blur"></fegaussianblur>
+              <femerge>
+                <femergenode in="blur"></femergenode>
+                <femergenode in="SourceGraphic"></femergenode>
+              </femerge>
+            </filter>
+          </defs>
+          <ellipse cx="100" cy="248" rx="55" ry="12" fill="#1a0f2e" opacity="0.6"></ellipse>
+          <path d="M70 200 Q100 220 130 200 L125 140 Q100 130 75 140 Z" fill="url(#gold)" filter="url(#glow)"></path>
+          <path d="M78 145 Q100 125 122 145 L118 95 Q100 75 82 95 Z" fill="url(#gold)"></path>
+          <ellipse cx="100" cy="88" rx="42" ry="28" fill="url(#gold)"></ellipse>
+          <path d="M58 88 Q100 55 142 88 Q100 72 58 88" fill="url(#goldShine)" opacity="0.7"></path>
+          <rect x="92" y="42" width="16" height="35" rx="4" fill="url(#gold)"></rect>
+          <circle cx="100" cy="38" r="14" fill="url(#gold)" filter="url(#glow)"></circle>
+          <circle cx="100" cy="38" r="6" fill="#fff9c4" opacity="0.9" class="lamp-spark"></circle>
+        </svg>
+      </div>
+
+      <div class="genie-entity mood-idle" id="genieEntity" hidden="">
+        <div class="genie-speech" id="genieSpeech" hidden=""></div>
+        <div class="think-bubbles" id="thinkBubbles" hidden="">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="genie-figure" id="genieFigure" tabindex="0" role="button" aria-label="Cute genie">
+          <div class="genie-halo">✦</div>
+          <div class="genie-turban"></div>
+          <div class="genie-head">
+            <span class="cheek cheek-l"></span>
+            <span class="cheek cheek-r"></span>
+            <div class="genie-face">
+              <div class="eyes-row">
+                <span class="eye eye-l"><span class="pupil"></span><span class="shine"></span></span>
+                <span class="eye eye-r"><span class="pupil"></span><span class="shine"></span></span>
+              </div>
+              <span class="genie-mouth"></span>
+            </div>
+          </div>
+          <div class="genie-body-cute">
+            <div class="belly-gem"></div>
+          </div>
+          <div class="genie-arms">
+            <div class="arm arm-l"></div>
+            <div class="arm arm-r"></div>
+          </div>
+          <div class="genie-tail"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="oracle" aria-label="Ask the genie">
+      <div class="suggestions" id="suggestions">
+        <button type="button" class="chip" data-q="suggest1">¿Encontraré el amor?</button>
+        <button type="button" class="chip" data-q="suggest2">¿Qué hago con mi carrera?</button>
+        <button type="button" class="chip" data-q="suggest3">Me siento perdido/a...</button>
+        <button type="button" class="chip" data-q="suggest4">¿Debo arriesgarme?</button>
+      </div>
+
+      <form id="wishForm" class="wish-form">
+        <label for="seekerName" class="label" data-i18n="labelName">Tu nombre (opcional)</label>
+        <input type="text" id="seekerName" class="input input-name" maxlength="40" autocomplete="name" placeholder="Viajero...">
+
+        <label for="question" class="label" data-i18n="labelQuestion">Habla tu pregunta a la lámpara</label>
+        <textarea id="question" class="input input-question" rows="3" required="" maxlength="500" placeholder="¿Qué busca saber tu corazón?"></textarea>
+
+        <button type="submit" class="btn-rub" id="rubBtn">
+          <span class="btn-inner" data-i18n="btnRub">Frotar la Lámpara</span>
+          <span class="btn-shimmer"></span>
+        </button>
+      </form>
+    </section>
+
+    <section class="answer-panel" id="answerPanel" hidden="" aria-live="polite">
+      <div class="answer-frame">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <p class="answer-label" data-i18n="answerLabel">El Genio habla</p>
+        <p class="answer-recall" id="answerRecall" hidden=""></p>
+        <div class="thinking-row" id="thinkingRow" hidden="">
+          <div class="thinking-dots"><span></span><span></span><span></span></div>
+          <p data-i18n="thinking">El genio piensa en el humo...</p>
+        </div>
+        <p class="answer-text" id="answerText"></p>
+        <p class="answer-whisper" id="answerWhisper"></p>
+        <button type="button" class="btn-again" id="againBtn" data-i18n="btnAgain">Hacer otra pregunta</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p data-i18n="footer">Tus secretos se disuelven en el humo. Solo queda la sabiduría.</p>
+    <p class="footer-recall" data-i18n="recallFooter">La lámpara guarda tu historia en polvo de estrellas.</p>
+  </footer>
+
+  <div class="modal-overlay" id="payModal" hidden="">
+    <div class="modal" role="dialog" aria-labelledby="payModalTitle">
+      <div class="modal-glow"></div>
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close">×</button>
+      <h2 class="modal-title" id="payModalTitle" data-i18n="payTitle">Tus tres deseos se agotaron</h2>
+      <p class="modal-desc" data-i18n="payDesc">Ley antigua: tres preguntas gratis. Para seguir consultando al genio, ofrece oro por más deseos.</p>
+      <div class="pay-packages">
+        <button type="button" class="pay-pack" data-pack="5" data-price="1.99">
+          <span class="pack-wishes">+5</span>
+          <span class="pack-label" data-i18n="pack5Label">deseos</span>
+          <span class="pack-price">$1.99</span>
+        </button>
+        <button type="button" class="pay-pack pay-pack-featured" data-pack="15" data-price="4.99">
+          <span class="pack-badge" data-i18n="packBest">Mejor valor</span>
+          <span class="pack-wishes">+15</span>
+          <span class="pack-label" data-i18n="pack15Label">deseos</span>
+          <span class="pack-price">$4.99</span>
+        </button>
+      </div>
+      <button type="button" class="btn-pay" id="confirmPay" data-i18n="btnPay" disabled="">Elige un paquete arriba</button>
+      <p class="pay-note" data-i18n="payNote">Modo demo: sin cobro real. Conecta Stripe o PayPal en producción.</p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsModal" hidden="">
+    <div class="modal modal-settings" role="dialog" aria-labelledby="settingsTitle">
+      <button type="button" class="modal-close" id="settingsClose" aria-label="Close">×</button>
+      <h2 class="modal-title" id="settingsTitle" data-i18n="settingsTitle">Activar IA real</h2>
+      <p class="modal-desc" data-i18n="settingsDesc">Pega tu API key de OpenAI para respuestas específicas con memoria. Solo se guarda en tu navegador.</p>
+      <label class="label" for="apiKeyInput" data-i18n="settingsKeyLabel">API key de OpenAI</label>
+      <input type="password" id="apiKeyInput" class="input" autocomplete="off" placeholder="sk-...">
+      <div class="settings-actions">
+        <button type="button" class="btn-pay" id="saveApiKey" data-i18n="settingsSave">Guardar y activar IA</button>
+        <button type="button" class="btn-again" id="removeApiKey" data-i18n="settingsRemove">Quitar key</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./Genie of the Lamp_files/i18n.js"></script>
+  <script src="./Genie of the Lamp_files/memory.js"></script>
+  <script src="./Genie of the Lamp_files/ai.js"></script>
+  <script src="./Genie of the Lamp_files/genie.js"></script>
+
+
+</body></html>
